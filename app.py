@@ -60,6 +60,7 @@ def main():
         use_tradeindia = st.checkbox("TradeIndia", value=True)
         use_indiamart = st.checkbox("IndiaMart", value=True)
         use_exportersindia = st.checkbox("ExportersIndia", value=True)
+        use_sample_data = st.checkbox("Demo Data (when live sites unavailable)", value=True, help="Uses realistic sample data when websites are blocked")
         
         # Clear data button
         if st.button("🗑️ Clear All Data", type="secondary"):
@@ -86,7 +87,7 @@ def main():
             disabled=st.session_state.scraping_in_progress,
             use_container_width=True
         ):
-            start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, use_indiamart, use_exportersindia)
+            start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, use_indiamart, use_exportersindia, use_sample_data)
     
     with col2:
         st.subheader("📋 Quick Stats")
@@ -112,7 +113,7 @@ def main():
         st.markdown("---")
         export_section()
 
-def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, use_indiamart, use_exportersindia):
+def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, use_indiamart, use_exportersindia, use_sample_data=True):
     """Start the scraping process"""
     st.session_state.scraping_in_progress = True
     
@@ -127,6 +128,8 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
         sources.append('indiamart')
     if use_exportersindia:
         sources.append('exportersindia')
+    if use_sample_data:
+        sources.append('sample_data')
     
     if not sources:
         st.error("❌ Please select at least one source website!")
