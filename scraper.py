@@ -3,67 +3,119 @@ from bs4 import BeautifulSoup
 import time
 import random
 import re
-from urllib.parse import urljoin, quote
+from urllib.parse import urljoin, quote, urlparse
 import logging
 from typing import List, Dict, Any, Optional
 import trafilatura
+import json
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+import cloudscraper
+from fake_useragent import UserAgent
 
-class TurmericBuyerScraper:
-    """Web scraper for collecting turmeric buyer company data"""
+class AdvancedTurmericBuyerScraper:
+    """Advanced web scraper for collecting real turmeric buyer company data"""
     
     def __init__(self, delay_seconds: int = 3):
         self.delay_seconds = delay_seconds
+        
+        # Initialize CloudScraper for advanced bot protection bypass
+        self.scraper = cloudscraper.create_scraper(
+            browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
+        )
+        
+        # Initialize User Agent rotation
+        self.ua = UserAgent()
+        
+        # Setup retry strategy
+        retry_strategy = Retry(
+            total=3,
+            status_forcelist=[429, 500, 502, 503, 504],
+            method_whitelist=["HEAD", "GET", "OPTIONS"],
+            backoff_factor=2
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        
+        # Regular session for fallback
         self.session = requests.Session()
+        self.session.mount("http://", adapter)
+        self.session.mount("https://", adapter)
         
-        # Rotate user agents to avoid detection
-        self.user_agents = [
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0',
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15',
-            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        ]
-        
+        # Advanced headers
         self._update_headers()
+        
+        # Real sources for turmeric buyers
+        self.real_sources = {
+            'government_directories': [
+                'https://www.dgft.gov.in',
+                'https://www.apeda.gov.in',
+                'https://www.agricoop.gov.in'
+            ],
+            'trade_platforms': [
+                'https://www.tradeindia.com',
+                'https://www.indiamart.com',
+                'https://www.exportersindia.com',
+                'https://www.alibaba.com',
+                'https://dir.indiamart.com'
+            ],
+            'company_registries': [
+                'https://www.mca.gov.in',
+                'https://www.zauba.com',
+                'https://www.tofler.in'
+            ]
+        }
         
         # Setup logging
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
     
     def _update_headers(self):
-        """Update session headers with random user agent"""
-        self.session.headers.update({
-            'User-Agent': random.choice(self.user_agents),
+        """Update session headers with advanced fingerprinting"""
+        headers = {
+            'User-Agent': self.ua.random,
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.9,id;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9,hi;q=0.8,id;q=0.7',
             'Accept-Encoding': 'gzip, deflate, br',
             'DNT': '1',
             'Connection': 'keep-alive',
             'Upgrade-Insecure-Requests': '1',
             'Sec-Fetch-Dest': 'document',
             'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-Site': 'none',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-User': '?1',
             'Cache-Control': 'max-age=0',
-        })
+            'sec-ch-ua': '"Google Chrome";v="120", "Chromium";v="120", "Not_A Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'Pragma': 'no-cache'
+        }
+        
+        self.session.headers.update(headers)
+        self.scraper.headers.update(headers)
     
     def scrape_source(self, source: str, search_term: str, limit: int = 50) -> List[Dict[str, Any]]:
-        """Scrape data from a specific source"""
+        """Advanced scraping from multiple real sources"""
         try:
             if source == 'tradeindia':
-                return self._scrape_tradeindia(search_term, limit)
+                return self._advanced_scrape_tradeindia(search_term, limit)
             elif source == 'indiamart':
-                return self._scrape_indiamart(search_term, limit)
+                return self._advanced_scrape_indiamart(search_term, limit)
             elif source == 'exportersindia':
-                return self._scrape_exportersindia(search_term, limit)
-            elif source == 'sample_data':
-                return self._generate_sample_data(search_term, limit)
+                return self._advanced_scrape_exportersindia(search_term, limit)
+            elif source == 'zauba':
+                return self._scrape_zauba_companies(search_term, limit)
+            elif source == 'tofler':
+                return self._scrape_tofler_companies(search_term, limit)
+            elif source == 'government_data':
+                return self._scrape_government_sources(search_term, limit)
+            elif source == 'alibaba':
+                return self._scrape_alibaba_buyers(search_term, limit)
             else:
                 self.logger.warning(f"Unknown source: {source}")
                 return []
         except Exception as e:
             self.logger.error(f"Error scraping {source}: {str(e)}")
-            # Fallback to sample data if scraping fails
-            return self._generate_sample_data(search_term, min(limit, 10))
+            return []
     
     def _scrape_tradeindia(self, search_term: str, limit: int) -> List[Dict[str, Any]]:
         """Scrape TradeIndia for turmeric buyers"""
@@ -615,3 +667,491 @@ class TurmericBuyerScraper:
         all_companies = sample_companies + extended_companies
         random.shuffle(all_companies)
         return all_companies[:limit]
+    
+    def _advanced_scrape_tradeindia(self, search_term: str, limit: int) -> List[Dict[str, Any]]:
+        """Advanced TradeIndia scraping with CloudScraper"""
+        companies = []
+        base_url = "https://www.tradeindia.com"
+        
+        try:
+            # Use multiple search approaches
+            search_urls = [
+                f"{base_url}/search.html?ss={quote(search_term)}&t=buyer",
+                f"{base_url}/buyers/{quote(search_term.replace(' ', '-'))}.html",
+                f"{base_url}/search.html?q={quote(search_term)}&cat=buyer"
+            ]
+            
+            for search_url in search_urls:
+                if len(companies) >= limit:
+                    break
+                    
+                try:
+                    # Use CloudScraper for better bypass
+                    response = self._make_advanced_request(search_url)
+                    if not response:
+                        continue
+                    
+                    # Use trafilatura for content extraction
+                    content = trafilatura.extract(response.text, include_links=True, include_tables=True)
+                    if content:
+                        soup = BeautifulSoup(response.text, 'html.parser')
+                        company_data = self._extract_companies_from_content(soup, base_url, 'TradeIndia')
+                        companies.extend(company_data[:limit - len(companies)])
+                    
+                    time.sleep(random.uniform(2, 4))
+                    
+                except Exception as e:
+                    self.logger.error(f"Error in advanced TradeIndia scraping: {str(e)}")
+                    continue
+            
+        except Exception as e:
+            self.logger.error(f"Error in TradeIndia advanced scraping: {str(e)}")
+        
+        return companies[:limit]
+    
+    def _advanced_scrape_indiamart(self, search_term: str, limit: int) -> List[Dict[str, Any]]:
+        """Advanced IndiaMart scraping with multiple endpoints"""
+        companies = []
+        base_url = "https://www.indiamart.com"
+        
+        try:
+            # Multiple search strategies
+            search_endpoints = [
+                f"{base_url}/impcat/{quote(search_term.replace(' ', '-'))}.html",
+                f"{base_url}/city/{random.choice(['mumbai', 'delhi', 'chennai', 'kolkata'])}/{quote(search_term.replace(' ', '-'))}/",
+                f"{base_url}/proddetail/{quote(search_term.replace(' ', '-'))}"
+            ]
+            
+            for endpoint in search_endpoints:
+                if len(companies) >= limit:
+                    break
+                
+                try:
+                    response = self._make_advanced_request(endpoint)
+                    if response:
+                        soup = BeautifulSoup(response.text, 'html.parser')
+                        extracted_companies = self._extract_companies_from_content(soup, base_url, 'IndiaMart')
+                        companies.extend(extracted_companies[:limit - len(companies)])
+                    
+                    time.sleep(random.uniform(3, 5))
+                    
+                except Exception as e:
+                    self.logger.error(f"Error in IndiaMart endpoint scraping: {str(e)}")
+                    continue
+            
+        except Exception as e:
+            self.logger.error(f"Error in IndiaMart advanced scraping: {str(e)}")
+        
+        return companies[:limit]
+    
+    def _scrape_zauba_companies(self, search_term: str, limit: int) -> List[Dict[str, Any]]:
+        """Scrape real company data from Zauba"""
+        companies = []
+        base_url = "https://www.zauba.com"
+        
+        try:
+            search_url = f"{base_url}/search?query={quote(search_term)}"
+            response = self._make_advanced_request(search_url)
+            
+            if response:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                
+                # Look for company listings
+                company_links = soup.find_all('a', href=re.compile(r'/company/'))
+                
+                for link in company_links[:limit]:
+                    try:
+                        company_url = urljoin(base_url, link.get('href'))
+                        company_response = self._make_advanced_request(company_url)
+                        
+                        if company_response:
+                            company_soup = BeautifulSoup(company_response.text, 'html.parser')
+                            company_data = self._extract_zauba_company_details(company_soup)
+                            if company_data:
+                                companies.append(company_data)
+                        
+                        time.sleep(random.uniform(2, 4))
+                        
+                    except Exception as e:
+                        self.logger.error(f"Error extracting Zauba company: {str(e)}")
+                        continue
+            
+        except Exception as e:
+            self.logger.error(f"Error scraping Zauba: {str(e)}")
+        
+        return companies[:limit]
+    
+    def _scrape_government_sources(self, search_term: str, limit: int) -> List[Dict[str, Any]]:
+        """Scrape from government trade directories"""
+        companies = []
+        
+        try:
+            # APEDA (Agricultural and Processed Food Products Export Development Authority)
+            apeda_url = "https://www.apeda.gov.in/apedawebsite/six_head_product/FFV.htm"
+            response = self._make_advanced_request(apeda_url)
+            
+            if response:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                # Extract exporters/buyers information
+                tables = soup.find_all('table')
+                for table in tables:
+                    rows = table.find_all('tr')
+                    for row in rows:
+                        cells = row.find_all(['td', 'th'])
+                        if len(cells) >= 3:
+                            company_data = self._extract_government_company_data(cells, 'APEDA')
+                            if company_data:
+                                companies.append(company_data)
+                                if len(companies) >= limit:
+                                    break
+            
+        except Exception as e:
+            self.logger.error(f"Error scraping government sources: {str(e)}")
+        
+        return companies[:limit]
+    
+    def _make_advanced_request(self, url: str, max_retries: int = 3) -> Optional[requests.Response]:
+        """Advanced request with CloudScraper and fallback"""
+        for attempt in range(max_retries):
+            try:
+                # Update headers for each attempt
+                self._update_headers()
+                
+                # Try CloudScraper first (best for bypassing protection)
+                try:
+                    response = self.scraper.get(url, timeout=30)
+                    if response.status_code == 200:
+                        return response
+                except Exception as e:
+                    self.logger.warning(f"CloudScraper failed: {str(e)}")
+                
+                # Fallback to regular session with advanced headers
+                headers = self.session.headers.copy()
+                headers['Referer'] = 'https://www.google.com/search?q=' + quote(url.split('/')[-1])
+                
+                response = self.session.get(url, timeout=30, headers=headers)
+                response.raise_for_status()
+                return response
+                
+            except requests.exceptions.RequestException as e:
+                self.logger.warning(f"Advanced request failed (attempt {attempt + 1}/{max_retries}): {str(e)}")
+                if attempt < max_retries - 1:
+                    wait_time = random.uniform(2 ** attempt, 2 ** (attempt + 1))
+                    time.sleep(wait_time)
+                else:
+                    self.logger.error(f"All advanced retry attempts failed for URL: {url}")
+        return None
+    
+    def _extract_companies_from_content(self, soup: BeautifulSoup, base_url: str, source: str) -> List[Dict[str, Any]]:
+        """Advanced company extraction using multiple selectors"""
+        companies = []
+        
+        # Multiple selector strategies for different layouts
+        company_selectors = [
+            {'container': 'div[class*="company"]', 'name': 'h3, h4, h5, .company-name', 'details': 'p, div, span'},
+            {'container': 'tr[class*="listing"]', 'name': 'td:first-child, .name', 'details': 'td'},
+            {'container': 'article, .result-item', 'name': '.title, h3, h4', 'details': '.description, p'},
+            {'container': '[data-company], [data-seller]', 'name': 'h3, h4, .name', 'details': '.details, p'},
+            {'container': '.card, .item', 'name': '.title, h3, h4', 'details': '.content, p'}
+        ]
+        
+        for selector_set in company_selectors:
+            try:
+                containers = soup.select(selector_set['container'])
+                
+                for container in containers[:10]:  # Limit per selector
+                    try:
+                        company_data = {
+                            'source': source,
+                            'company_name': '',
+                            'contact_person': '',
+                            'city': '',
+                            'state': '',
+                            'country': 'India',
+                            'phone': '',
+                            'email': '',
+                            'website': '',
+                            'description': '',
+                            'products': '',
+                            'company_url': ''
+                        }
+                        
+                        # Extract company name
+                        name_elem = container.select_one(selector_set['name'])
+                        if name_elem:
+                            company_data['company_name'] = name_elem.get_text(strip=True)
+                            
+                            # Get company URL if available
+                            link = name_elem.find('a') or container.find('a', href=re.compile(r'/company/|/seller/'))
+                            if link and link.get('href'):
+                                company_data['company_url'] = urljoin(base_url, link['href'])
+                        
+                        # Extract all text content for parsing
+                        all_text = container.get_text()
+                        
+                        # Smart extraction using regex patterns
+                        company_data.update(self._smart_extract_company_info(all_text))
+                        
+                        # Only add if we have meaningful data
+                        if (company_data['company_name'] and 
+                            len(company_data['company_name']) > 3 and
+                            not any(invalid in company_data['company_name'].lower() 
+                                   for invalid in ['search', 'result', 'page', 'more', 'view'])):
+                            companies.append(company_data)
+                    
+                    except Exception as e:
+                        continue
+                        
+            except Exception as e:
+                continue
+        
+        return companies
+    
+    def _smart_extract_company_info(self, text: str) -> Dict[str, str]:
+        """Smart extraction of company information using advanced regex"""
+        info = {}
+        
+        # Phone number extraction (Indian numbers)
+        phone_patterns = [
+            r'\+91[\s-]?[789]\d{9}',
+            r'91[\s-]?[789]\d{9}',
+            r'[789]\d{9}',
+            r'\(\+91\)[\s-]?\d{10}',
+            r'0\d{2,4}[\s-]?\d{6,8}'
+        ]
+        
+        for pattern in phone_patterns:
+            match = re.search(pattern, text)
+            if match:
+                info['phone'] = match.group(0).strip()
+                break
+        
+        # Email extraction
+        email_match = re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text)
+        if email_match:
+            info['email'] = email_match.group(0).lower()
+        
+        # Website extraction
+        website_patterns = [
+            r'www\.[A-Za-z0-9.-]+\.[A-Za-z]{2,4}',
+            r'https?://[A-Za-z0-9.-]+\.[A-Za-z]{2,4}',
+            r'\b[A-Za-z0-9.-]+\.com\b',
+            r'\b[A-Za-z0-9.-]+\.in\b'
+        ]
+        
+        for pattern in website_patterns:
+            match = re.search(pattern, text)
+            if match:
+                info['website'] = match.group(0).strip()
+                break
+        
+        # Location extraction (Indian cities and states)
+        location_patterns = [
+            r'\b(Mumbai|Delhi|Bangalore|Hyderabad|Ahmedabad|Chennai|Kolkata|Surat|Pune|Jaipur|Lucknow|Kanpur|Nagpur|Indore|Thane|Bhopal|Visakhapatnam|Pimpri|Patna|Vadodara|Ghaziabad|Ludhiana|Agra|Nashik|Faridabad|Meerut|Rajkot|Kalyan|Vasai|Varanasi|Srinagar|Aurangabad|Dhanbad|Amritsar|Navi Mumbai|Allahabad|Ranchi|Howrah|Coimbatore|Jabalpur|Gwalior|Vijayawada|Jodhpur|Madurai|Raipur|Kota|Guwahati|Chandigarh|Solapur|Hubli|Tiruchirappalli|Bareilly|Mysore|Tiruppur|Gurgaon|Aligarh|Jalandhar|Bhubaneswar|Salem|Mira|Warangal|Guntur|Bhiwandi|Saharanpur|Gorakhpur|Bikaner|Amravati|Noida|Jamshedpur|Bhilai|Cuttack|Firozabad|Kochi|Nellore|Bhavnagar|Dehradun|Durgapur|Asansol|Rourkela|Nanded|Kolhapur|Ajmer|Akola|Gulbarga|Jamnagar|Ujjain|Loni|Siliguri|Jhansi|Ulhasnagar|Jammu|Sangli|Mangalore|Erode|Belgaum|Ambattur|Tirunelveli|Malegaon|Gaya|Jalgaon|Udaipur|Maheshtala)\b',
+            r'\b(Maharashtra|Gujarat|Rajasthan|Punjab|Haryana|Madhya Pradesh|Uttar Pradesh|West Bengal|Tamil Nadu|Karnataka|Kerala|Andhra Pradesh|Telangana|Bihar|Odisha|Jharkhand|Assam|Chhattisgarh|Himachal Pradesh|Uttarakhand|Goa|Tripura|Meghalaya|Manipur|Nagaland|Arunachal Pradesh|Mizoram|Sikkim|Delhi|Chandigarh|Puducherry|Andaman and Nicobar Islands|Dadra and Nagar Haveli|Daman and Diu|Lakshadweep|Ladakh|Jammu and Kashmir)\b'
+        ]
+        
+        for i, pattern in enumerate(location_patterns):
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                if i == 0:  # Cities
+                    info['city'] = match.group(0).title()
+                else:  # States
+                    info['state'] = match.group(0).title()
+        
+        # Contact person extraction
+        contact_patterns = [
+            r'(?:Contact Person|Contact|Mr\.|Ms\.|Mrs\.)\s*:?\s*([A-Z][a-z]+ [A-Z][a-z]+)',
+            r'(?:Director|Manager|Owner|CEO|MD)\s*:?\s*([A-Z][a-z]+ [A-Z][a-z]+)',
+            r'\b(Mr\.|Ms\.|Mrs\.)\s+([A-Z][a-z]+ [A-Z][a-z]+)'
+        ]
+        
+        for pattern in contact_patterns:
+            match = re.search(pattern, text)
+            if match:
+                info['contact_person'] = match.group(-1).strip()
+                break
+        
+        return info
+    
+    def _advanced_scrape_exportersindia(self, search_term: str, limit: int) -> List[Dict[str, Any]]:
+        """Advanced ExportersIndia scraping"""
+        companies = []
+        base_url = "https://www.exportersindia.com"
+        
+        try:
+            search_urls = [
+                f"{base_url}/search/{quote(search_term)}-buyers.html",
+                f"{base_url}/buyers/{quote(search_term.replace(' ', '-'))}.html",
+                f"{base_url}/importers/{quote(search_term.replace(' ', '-'))}.html"
+            ]
+            
+            for search_url in search_urls:
+                if len(companies) >= limit:
+                    break
+                
+                try:
+                    response = self._make_advanced_request(search_url)
+                    if response:
+                        soup = BeautifulSoup(response.text, 'html.parser')
+                        extracted_companies = self._extract_companies_from_content(soup, base_url, 'ExportersIndia')
+                        companies.extend(extracted_companies[:limit - len(companies)])
+                    
+                    time.sleep(random.uniform(2, 4))
+                    
+                except Exception as e:
+                    self.logger.error(f"Error in ExportersIndia scraping: {str(e)}")
+                    continue
+            
+        except Exception as e:
+            self.logger.error(f"Error in ExportersIndia advanced scraping: {str(e)}")
+        
+        return companies[:limit]
+    
+    def _scrape_tofler_companies(self, search_term: str, limit: int) -> List[Dict[str, Any]]:
+        """Scrape companies from Tofler business intelligence platform"""
+        companies = []
+        base_url = "https://www.tofler.in"
+        
+        try:
+            search_url = f"{base_url}/search?q={quote(search_term)}"
+            response = self._make_advanced_request(search_url)
+            
+            if response:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                company_cards = soup.find_all(['div', 'article'], class_=re.compile(r'company|result|card'))
+                
+                for card in company_cards[:limit]:
+                    try:
+                        company_data = self._extract_tofler_company_details(card, base_url)
+                        if company_data:
+                            companies.append(company_data)
+                    except Exception as e:
+                        continue
+            
+        except Exception as e:
+            self.logger.error(f"Error scraping Tofler: {str(e)}")
+        
+        return companies[:limit]
+    
+    def _scrape_alibaba_buyers(self, search_term: str, limit: int) -> List[Dict[str, Any]]:
+        """Scrape international buyers from Alibaba"""
+        companies = []
+        base_url = "https://www.alibaba.com"
+        
+        try:
+            search_url = f"{base_url}/trade/search?SearchText={quote(search_term)}&IndexArea=product_en&CatId=&company=y"
+            response = self._make_advanced_request(search_url)
+            
+            if response:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                company_elements = soup.find_all(['div', 'li'], class_=re.compile(r'company|supplier|manufacturer'))
+                
+                for element in company_elements[:limit]:
+                    try:
+                        company_data = self._extract_alibaba_company_details(element, base_url)
+                        if company_data:
+                            companies.append(company_data)
+                    except Exception as e:
+                        continue
+            
+        except Exception as e:
+            self.logger.error(f"Error scraping Alibaba: {str(e)}")
+        
+        return companies[:limit]
+    
+    def _extract_tofler_company_details(self, card, base_url: str) -> Optional[Dict[str, Any]]:
+        """Extract company details from Tofler card"""
+        try:
+            company_data = {
+                'source': 'Tofler (Business Intelligence)',
+                'company_name': '',
+                'contact_person': '',
+                'city': '',
+                'state': '',
+                'country': 'India',
+                'phone': '',
+                'email': '',
+                'website': '',
+                'description': '',
+                'products': '',
+                'company_url': '',
+                'cin_number': '',
+                'annual_revenue': '',
+                'employee_count': ''
+            }
+            
+            # Extract company name
+            name_elem = card.find(['h3', 'h4', 'a'], class_=re.compile(r'name|title|company'))
+            if name_elem:
+                company_data['company_name'] = name_elem.get_text(strip=True)
+                if name_elem.get('href'):
+                    company_data['company_url'] = urljoin(base_url, name_elem['href'])
+            
+            # Extract all text for smart parsing
+            all_text = card.get_text()
+            extracted_info = self._smart_extract_company_info(all_text)
+            company_data.update(extracted_info)
+            
+            # Extract business metrics if available
+            revenue_match = re.search(r'Revenue:?\s*₹?([0-9,\s]+(?:crore|lakh))', all_text, re.IGNORECASE)
+            if revenue_match:
+                company_data['annual_revenue'] = revenue_match.group(1)
+            
+            employee_match = re.search(r'Employee:?\s*(\d+[-\s]*\d*)', all_text, re.IGNORECASE)
+            if employee_match:
+                company_data['employee_count'] = employee_match.group(1)
+            
+            return company_data if company_data['company_name'] else None
+            
+        except Exception as e:
+            return None
+    
+    def _extract_alibaba_company_details(self, element, base_url: str) -> Optional[Dict[str, Any]]:
+        """Extract company details from Alibaba element"""
+        try:
+            company_data = {
+                'source': 'Alibaba International',
+                'company_name': '',
+                'contact_person': '',
+                'city': '',
+                'state': '',
+                'country': '',
+                'phone': '',
+                'email': '',
+                'website': '',
+                'description': '',
+                'products': '',
+                'company_url': '',
+                'trade_type': 'International Buyer'
+            }
+            
+            # Extract company name
+            name_elem = element.find(['h3', 'h4', 'a'], class_=re.compile(r'company|supplier|name'))
+            if name_elem:
+                company_data['company_name'] = name_elem.get_text(strip=True)
+                if name_elem.get('href'):
+                    company_data['company_url'] = urljoin(base_url, name_elem['href'])
+            
+            # Extract location (international)
+            location_elem = element.find(text=re.compile(r'Country|Location'))
+            if location_elem:
+                location_parent = location_elem.parent
+                if location_parent:
+                    location_text = location_parent.get_text()
+                    # Extract country from international location
+                    countries = ['India', 'USA', 'UK', 'Germany', 'France', 'Italy', 'Spain', 'UAE', 'Singapore', 'Malaysia', 'Thailand', 'Vietnam', 'China', 'Japan', 'South Korea']
+                    for country in countries:
+                        if country.lower() in location_text.lower():
+                            company_data['country'] = country
+                            break
+            
+            # Extract all text for additional info
+            all_text = element.get_text()
+            extracted_info = self._smart_extract_company_info(all_text)
+            company_data.update(extracted_info)
+            
+            return company_data if company_data['company_name'] else None
+            
+        except Exception as e:
+            return None
