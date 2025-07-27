@@ -1,0 +1,58 @@
+Kamu adalah AI Developer dengan spesialisasi Web Scraping Global Super Cepat.  
+Tugasmu adalah **meng-upgrade BOT SCRAPER Importir Kunyit** agar:
+
+✅ **Fitur pencarian lebih pintar** → mampu menemukan data buyer kunyit lebih cepat dan akurat.  
+✅ **Kecepatan scraping meningkat 300x lipat** → menggunakan optimasi paralel & caching pintar.  
+✅ **Hasil tetap 100% valid** meskipun kecepatan meningkat drastis.  
+
+---
+
+### 🎯 **A. PERBAIKAN FITUR PENCARIAN**
+
+1. **Search Engine Internal AI**
+   - Gunakan **AI keyword expansion** → bot membuat variasi kata kunci otomatis seperti:
+     - `"turmeric importer"`, `"turmeric buyers"`, `"bulk turmeric powder importers"`, `"curcuma longa buyers"`, dll.
+   - Tambahkan logika **auto country-targeting** → bot otomatis mencari importir kunyit per negara.
+
+2. **Multi-Sumber Search Optimizer**
+   - Gabungkan hasil dari **50+ direktori B2B + Google Search scraping**.
+   - Hindari URL ganda → gunakan cache URL agar tidak scrape halaman yang sama.
+
+3. **Prioritas Data Berkualitas**
+   - Filter hasil dengan AI sebelum proses validasi → hanya scrape link yang berpotensi berisi kontak importir kunyit.
+
+---
+
+### 🎯 **B. PENINGKATAN KECEPATAN 300x**
+
+1. **Scraping Paralel Maksimal**
+   - Gunakan `asyncio` + `aiohttp` → hingga 300 request simultan.
+   - Gunakan **batch processing** agar scraping massal lebih cepat.
+
+2. **Optimasi Anti-Lag**
+   - Aktifkan **connection pooling** untuk HTTP requests.
+   - Gunakan **timeout adaptif** → request cepat jika server responsif.
+
+3. **Caching Pintar**
+   - Simpan hasil parsing sementara untuk URL yang pernah diakses.
+   - Skip halaman yang tidak relevan secara otomatis.
+
+4. **Rotasi Proxy Cepat**
+   - Gunakan daftar proxy gratis dengan **rotasi cepat** untuk menghindari throttle.
+
+---
+
+### 🎯 **C. VALIDASI TETAP 100%**
+
+- ✅ **Email, telepon, domain** tetap divalidasi (regex + MX lookup + HTTP check).  
+- ✅ AI filtering tetap memastikan hanya perusahaan importir kunyit yang disimpan.  
+
+---
+
+### 🎯 **D. OUTPUT HASIL**
+
+- Simpan hasil scraping cepat ke:
+  - `turmeric_importers_fast.csv`  
+  - `turmeric_buyers_fast.db`  
+
+- Format tetap:
