@@ -10,11 +10,16 @@ class DataProcessor:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
     
-    def process_data(self, raw_data: List[Dict[str, Any]]) -> pd.DataFrame:
+    def process_data(self, raw_data) -> pd.DataFrame:
         """Process raw scraped data into clean DataFrame"""
         try:
-            # Convert to DataFrame
-            df = pd.DataFrame(raw_data)
+            # Handle different input types
+            if isinstance(raw_data, pd.DataFrame):
+                df = raw_data.copy()
+            elif isinstance(raw_data, list):
+                df = pd.DataFrame(raw_data)
+            else:
+                df = pd.DataFrame([raw_data])
             
             if df.empty:
                 return df
