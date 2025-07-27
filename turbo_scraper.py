@@ -17,7 +17,7 @@ import concurrent.futures
 class TurboTurmericBuyerScraper:
     """Ultra-fast 30x speed turmeric buyer scraper with real data"""
     
-    def __init__(self, delay_seconds: int = 0.1):  # 30x faster - reduced from 3s to 0.1s
+    def __init__(self, delay_seconds: float = 0.1):  # 30x faster - reduced from 3s to 0.1s
         self.delay_seconds = delay_seconds
         
         # Initialize multiple CloudScrapers for parallel processing

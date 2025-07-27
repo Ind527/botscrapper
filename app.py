@@ -175,7 +175,7 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
         return
     
     # Initialize turbo scraper for 30x faster speed
-    scraper = TurboTurmericBuyerScraper(delay_seconds=0.1)  # Ultra-fast scraping
+    scraper = TurboTurmericBuyerScraper(delay_seconds=delay_seconds)  # Ultra-fast scraping
     data_processor = DataProcessor()
     
     # Progress containers
@@ -369,8 +369,7 @@ def export_section():
                 # Convert to Excel format
                 from io import BytesIO
                 output = BytesIO()
-                with pd.ExcelWriter(output, engine='openpyxl') as writer:
-                    st.session_state.scraped_data.to_excel(writer, sheet_name='Turmeric Buyers', index=False)
+                st.session_state.scraped_data.to_excel(output, sheet_name='Turmeric Buyers', index=False, engine='openpyxl')
                 
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 filename = f"turmeric_buyers_{timestamp}.xlsx"
