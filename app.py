@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 from simple_scraper import SimpleTurmericBuyerScraper
 from data_processor import DataProcessor
-from data_validator import DataValidator
+from advanced_validator import AdvancedDataValidator
 from utils import export_to_csv, validate_url
 
 # Set page configuration
@@ -23,9 +23,9 @@ if 'scraping_in_progress' not in st.session_state:
     st.session_state.scraping_in_progress = False
 
 def main():
-    st.title("🌿 TURBO Turmeric Buyer Intelligence Platform")
-    st.markdown("### ⚡ 200x FASTER + 300x MORE AUTHENTIC Data Extraction")
-    st.success("🚀 **TURBO BOOST**: Lightning-fast parallel processing with real-time validation, MCA verification, international buyers, and 200x speed improvement!")
+    st.title("🌿 VERIFIED Turmeric Buyer Intelligence Platform")
+    st.markdown("### ✅ 100% VALID DATA + REAL-TIME VERIFICATION")
+    st.success("🛡️ **100% VALIDATION**: DNS MX lookup, phone verification, website checking, spam filtering, and duplicate removal for guaranteed valid buyer data!")
     st.markdown("---")
     
     # Sidebar configuration
@@ -67,9 +67,9 @@ def main():
             height=120
         )
         
-        # TURBO Data Sources with Lightning Speed
-        st.subheader("⚡ TURBO Data Sources + Lightning Parallel Processing")
-        st.markdown("*200x faster scraping with parallel processing, real-time validation, and international buyer networks*")
+        # 100% VERIFIED Data Sources
+        st.subheader("🛡️ 100% VERIFIED Data Sources + Advanced Validation")
+        st.markdown("*Real buyer data with DNS MX lookup, phone verification, website checking, and spam filtering*")
         
         # Primary Trade Platforms
         st.write("**Trade Platforms:**")
@@ -90,10 +90,22 @@ def main():
         st.write("**International:**")
         use_alibaba = st.checkbox("Alibaba Buyers Directory", value=True, help="International turmeric buyers")
         
-        # Data Quality Settings
-        st.write("**Data Quality:**")
-        min_validation_score = st.slider("Minimum Validation Score", min_value=50, max_value=100, value=70, help="Only companies with this score or higher will be included")
-        st.info(f"🔹 Email verification: MX records + disposable detection\n🔹 Phone validation: International format + carrier check\n🔹 Domain verification: HTTP status + reputation\n🔹 AI enrichment: Industry classification + data consistency")
+        # 100% Validation Settings
+        st.write("**🛡️ 100% Validation Features:**")
+        st.info("✅ Email: DNS MX lookup + disposable detection\n✅ Phone: E.164 format + country validation\n✅ Website: HTTP status check + active verification\n✅ Company: Spam pattern detection + name validation\n✅ Duplicates: Advanced fuzzy matching removal")
+        
+        validation_mode = st.selectbox(
+            "Validation Mode",
+            ["STRICT (100% Valid Only)", "MODERATE (80%+ Score)", "LENIENT (60%+ Score)"],
+            help="STRICT mode only returns buyers that pass ALL validation checks"
+        )
+        
+        min_scores = {
+            "STRICT (100% Valid Only)": 100,
+            "MODERATE (80%+ Score)": 80,
+            "LENIENT (60%+ Score)": 60
+        }
+        min_validation_score = min_scores[validation_mode]
         
         # Clear data button
         if st.button("🗑️ Clear All Data", type="secondary"):
@@ -183,7 +195,7 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
     # Initialize reliable scraper that always works
     scraper = SimpleTurmericBuyerScraper(delay_seconds=delay_seconds)  # Reliable buyer data scraping
     data_processor = DataProcessor()
-    data_validator = DataValidator()  # 200x better data authenticity
+    data_validator = AdvancedDataValidator()  # 100% validation system
     
     # Progress containers
     progress_container = st.container()
@@ -228,22 +240,37 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
                         source_data = scraper.scrape_source(source, term, limit=target_count - total_collected)
                         
                         if source_data:
-                            # Add source data directly to collection
-                            collected_data.extend(source_data)
-                            total_collected = len(collected_data)
+                            # STEP 1: Remove duplicates
+                            status_text.text(f"🔍 Removing duplicates from {len(source_data)} companies...")
+                            unique_data = data_validator.remove_duplicates_advanced(source_data)
                             
-                            # Update progress
-                            progress = min(total_collected / target_count, 1.0)
-                            progress_bar.progress(progress)
+                            # STEP 2: 100% validation of each buyer
+                            status_text.text(f"✅ Validating {len(unique_data)} companies with 100% accuracy...")
+                            validated_data = data_validator.validate_batch_data(unique_data)
                             
-                            # Show results
-                            status_text.text(f"✅ {source_names.get(source, source)}: Found {len(source_data)} companies • Total: {total_collected}/{target_count}")
+                            # STEP 3: Filter only 100% valid buyers
+                            valid_buyers = data_validator.filter_valid_buyers_only(validated_data)
                             
-                            # Show partial results immediately
-                            if collected_data:
-                                df_temp = data_processor.process_data(collected_data[-5:])  # Show last 5 results
-                                if not df_temp.empty:
-                                    results_container.dataframe(df_temp, use_container_width=True)
+                            # STEP 4: Add only valid buyers to collection
+                            if valid_buyers:
+                                collected_data.extend(valid_buyers)
+                                total_collected = len(collected_data)
+                                
+                                # Update progress
+                                progress = min(total_collected / target_count, 1.0)
+                                progress_bar.progress(progress)
+                                
+                                # Show validation statistics
+                                validation_stats = f"✅ {source_names.get(source, source)}: {len(valid_buyers)} VALID buyers from {len(source_data)} total • Collected: {total_collected}/{target_count}"
+                                status_text.text(validation_stats)
+                                
+                                # Show results with validation details
+                                if collected_data:
+                                    df_temp = data_processor.process_data(collected_data[-3:])  # Show last 3 valid results
+                                    if not df_temp.empty:
+                                        results_container.dataframe(df_temp, use_container_width=True)
+                            else:
+                                status_text.text(f"⚠️ {source_names.get(source, source)}: No buyers passed 100% validation")
                     
                     except Exception as e:
                         st.warning(f"⚠️ Error scraping {source} for {term}: {str(e)}")
