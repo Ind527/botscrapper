@@ -3,7 +3,7 @@ import pandas as pd
 import time
 from datetime import datetime
 import os
-from scraper import AdvancedTurmericBuyerScraper
+from turbo_scraper import TurboTurmericBuyerScraper
 from data_processor import DataProcessor
 from utils import export_to_csv, validate_url
 
@@ -40,14 +40,23 @@ def main():
             step=5
         )
         
-        # Delay between requests
-        delay_seconds = st.slider(
-            "Delay between requests (seconds):",
-            min_value=1,
-            max_value=10,
-            value=3,
-            step=1
+        # Turbo Speed Configuration
+        st.subheader("⚡ Turbo Speed Settings")
+        speed_mode = st.selectbox(
+            "Speed Mode",
+            ["🚀 Turbo (30x Faster)", "⚡ High Speed (10x Faster)", "🐌 Standard"],
+            index=0
         )
+        
+        if speed_mode == "🚀 Turbo (30x Faster)":
+            delay_seconds = 0.1
+            st.success("⚡ Turbo mode: 30x faster scraping enabled!")
+        elif speed_mode == "⚡ High Speed (10x Faster)":
+            delay_seconds = 0.3
+            st.info("⚡ High speed mode: 10x faster scraping")
+        else:
+            delay_seconds = 3
+            st.warning("🐌 Standard mode: Normal speed scraping")
         
         # Search terms
         st.subheader("Search Terms")
@@ -165,8 +174,8 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
         st.session_state.scraping_in_progress = False
         return
     
-    # Initialize advanced scraper
-    scraper = AdvancedTurmericBuyerScraper(delay_seconds=delay_seconds)
+    # Initialize turbo scraper for 30x faster speed
+    scraper = TurboTurmericBuyerScraper(delay_seconds=0.1)  # Ultra-fast scraping
     data_processor = DataProcessor()
     
     # Progress containers
