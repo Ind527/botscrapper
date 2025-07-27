@@ -3,7 +3,7 @@ import pandas as pd
 import time
 from datetime import datetime
 import os
-from ultra_fast_scraper_fixed import HyperTurmericBuyerScraper
+from robust_scraper import HyperTurmericBuyerScraper
 from data_processor import DataProcessor
 from advanced_validator import AdvancedDataValidator
 from utils import export_to_csv, validate_url

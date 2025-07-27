@@ -1,0 +1,4 @@
+company_name,email,phone,website,location,source,confidence_score,raw_text
+Global Turmeric Buyer Trading Co.,info@turmericbuyertrade.com,+1-555-0123,www.turmericbuyertrade.com,"New York, USA",sample_data,0.85,We are a leading importer of turmeric buyer with 15+ years experience
+Turmeric Buyer Import Solutions Ltd.,sales@turmericbuyerimport.co.uk,+44-20-7123-4567,www.turmericbuyerimport.co.uk,"London, UK",sample_data,0.79,Bulk turmeric buyer importers serving European markets
+Asian Turmeric Buyer Distributors,contact@asianturmericbuyer.com,+65-6789-0123,www.asianturmericbuyer.com,Singapore,sample_data,0.92,Premium quality turmeric buyer distribution across Asia-Pacific
