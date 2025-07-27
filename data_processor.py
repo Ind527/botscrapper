@@ -52,7 +52,7 @@ class DataProcessor:
             
             # Remove entries with invalid names
             df = df[df['company_name'].str.len() > 2]
-            df = df[~df['company_name'].str.contains(r'^(nan|none|null)$', case=False, na=False)]
+            df = df[~df['company_name'].str.contains(r'(?:nan|none|null)$', case=False, na=False)]
         
         return df
     
@@ -122,7 +122,7 @@ class DataProcessor:
                 df[col] = df[col].astype(str).str.strip().str.title()
                 
                 # Remove invalid entries
-                df.loc[df[col].str.contains(r'^(nan|none|null)$', case=False, na=False), col] = None
+                df.loc[df[col].str.contains(r'(?:nan|none|null)$', case=False, na=False), col] = None
                 df.loc[df[col].str.len() <= 1, col] = None
         
         return df
