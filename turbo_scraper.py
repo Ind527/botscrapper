@@ -25,7 +25,7 @@ class TurboTurmericBuyerScraper:
         for i in range(5):  # 5 parallel scrapers for 30x speed boost
             scraper = cloudscraper.create_scraper(
                 browser={
-                    'browser': random.choice(['chrome', 'firefox', 'safari']),
+                    'browser': random.choice(['chrome', 'firefox']),
                     'platform': random.choice(['windows', 'darwin', 'linux']),
                     'mobile': False
                 },

@@ -8,6 +8,15 @@ This is a Streamlit-based web application designed to scrape company data from v
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+
+### Migration Completed (July 27, 2025)
+- ✓ Successfully migrated from Replit Agent to Replit environment
+- ✓ Created proper Streamlit configuration (.streamlit/config.toml)
+- ✓ Fixed browser compatibility issues in turbo_scraper.py (removed Safari support)
+- ✓ Resolved type errors for better Python compatibility
+- ✓ Application now running successfully on port 5000
+
 ## System Architecture
 
 ### Frontend Architecture
