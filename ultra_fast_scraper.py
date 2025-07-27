@@ -15,6 +15,7 @@ from fake_useragent import UserAgent
 from dataclasses import dataclass
 import sqlite3
 import hashlib
+import concurrent.futures
 
 @dataclass
 class SearchResult:
@@ -37,13 +38,8 @@ class UltraFastTurmericScraper:
         self.url_cache: Set[str] = set()
         self.results_cache: Dict[str, List[Dict]] = {}
         
-        # Initialize connection pool for async requests
-        self.connector = aiohttp.TCPConnector(
-            limit=300,  # Max 300 concurrent connections
-            limit_per_host=50,
-            keepalive_timeout=30,
-            enable_cleanup_closed=True
-        )
+        # Connection pool will be initialized when needed
+        self.connector = None
         
         # AI-powered keyword expansion
         self.ai_keywords = self._generate_ai_keywords()
@@ -303,6 +299,15 @@ class UltraFastTurmericScraper:
         if not search_terms or search_terms == ['']:
             search_terms = self.ai_keywords[:20]  # Use top 20 AI keywords
         
+        # Initialize connector in async context
+        if not self.connector:
+            self.connector = aiohttp.TCPConnector(
+                limit=300,  # Max 300 concurrent connections
+                limit_per_host=50,
+                keepalive_timeout=30,
+                enable_cleanup_closed=True
+            )
+        
         async with aiohttp.ClientSession(connector=self.connector) as session:
             tasks = []
             
@@ -476,15 +481,95 @@ class HyperTurmericBuyerScraper(UltraFastTurmericScraper):
     def scrape_buyers(self, search_terms: List[str], target_count: int = 50) -> List[Dict[str, Any]]:
         """Sync wrapper for async scraping"""
         try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-        
+            # Check if there's already a running loop
+            try:
+                loop = asyncio.get_running_loop()
+                # If there's a running loop, we need to run in a thread
+                import concurrent.futures
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    future = executor.submit(self._run_in_new_loop, search_terms, target_count)
+                    return future.result()
+            except RuntimeError:
+                # No running loop, safe to create one
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                try:
+                    return loop.run_until_complete(
+                        self.scrape_ultra_fast(search_terms, target_count)
+                    )
+                finally:
+                    loop.close()
+        except Exception as e:
+            self.logger.error(f"Scraping error: {e}")
+            return self._fallback_scraping(search_terms, target_count)
+    
+    def _run_in_new_loop(self, search_terms: List[str], target_count: int = 50) -> List[Dict[str, Any]]:
+        """Run async scraping in a new event loop"""
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         try:
             return loop.run_until_complete(
                 self.scrape_ultra_fast(search_terms, target_count)
             )
-        except Exception as e:
-            self.logger.error(f"Scraping error: {e}")
-            return []
+        finally:
+            loop.close()
+    
+    def _fallback_scraping(self, search_terms: List[str], target_count: int = 50) -> List[Dict[str, Any]]:
+        """Fallback synchronous scraping method"""
+        self.logger.info("Using fallback synchronous scraping method")
+        all_companies = []
+        
+        # Use AI-expanded keywords if no specific terms provided
+        if not search_terms or search_terms == ['']:
+            search_terms = self.ai_keywords[:10]  # Use top 10 AI keywords for fallback
+        
+        for term in search_terms[:5]:  # Limit to 5 terms for fallback
+            try:
+                # Simple synchronous search using requests
+                companies = self._sync_search_term(term, target_count // len(search_terms))
+                all_companies.extend(companies)
+                
+                if len(all_companies) >= target_count:
+                    break
+                    
+            except Exception as e:
+                self.logger.debug(f"Error in fallback scraping for {term}: {e}")
+                continue
+        
+        # Apply smart deduplication
+        unique_companies = self._smart_deduplication(all_companies)
+        return unique_companies[:target_count]
+    
+    def _sync_search_term(self, term: str, limit: int) -> List[Dict[str, Any]]:
+        """Synchronous search for a single term"""
+        companies = []
+        
+        # Search using basic requests - much simpler approach
+        search_urls = [
+            f"https://www.google.com/search?q={quote(term + ' importer contact')}",
+            f"https://www.bing.com/search?q={quote(term + ' buyer email')}",
+        ]
+        
+        for url in search_urls:
+            try:
+                headers = {
+                    'User-Agent': self.ua.random,
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.5',
+                }
+                
+                response = self.session.get(url, headers=headers, timeout=10)
+                if response.status_code == 200:
+                    companies.extend(self._extract_companies_ai(response.text, 'fallback_search'))
+                    
+            except Exception as e:
+                self.logger.debug(f"Error fetching {url}: {e}")
+                continue
+                
+            # Add small delay
+            time.sleep(self.delay_seconds)
+            
+            if len(companies) >= limit:
+                break
+        
+        return companies[:limit]
