@@ -13,13 +13,15 @@ class DataProcessor:
     def process_data(self, raw_data) -> pd.DataFrame:
         """Process raw scraped data into clean DataFrame"""
         try:
-            # Handle different input types
+            # Convert to DataFrame safely
             if isinstance(raw_data, pd.DataFrame):
                 df = raw_data.copy()
             elif isinstance(raw_data, list):
                 df = pd.DataFrame(raw_data)
-            else:
+            elif isinstance(raw_data, dict):
                 df = pd.DataFrame([raw_data])
+            else:
+                df = pd.DataFrame()
             
             if df.empty:
                 return df

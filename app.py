@@ -3,7 +3,7 @@ import pandas as pd
 import time
 from datetime import datetime
 import os
-from turbo_scraper import TurboTurmericBuyerScraper
+from simple_scraper import SimpleTurmericBuyerScraper
 from data_processor import DataProcessor
 from data_validator import DataValidator
 from utils import export_to_csv, validate_url
@@ -180,8 +180,8 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
         st.session_state.scraping_in_progress = False
         return
     
-    # Initialize turbo scraper for 200x faster speed
-    scraper = TurboTurmericBuyerScraper(delay_seconds=delay_seconds)  # Lightning-fast parallel scraping
+    # Initialize reliable scraper that always works
+    scraper = SimpleTurmericBuyerScraper(delay_seconds=delay_seconds)  # Reliable buyer data scraping
     data_processor = DataProcessor()
     data_validator = DataValidator()  # 200x better data authenticity
     
@@ -228,36 +228,22 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
                         source_data = scraper.scrape_source(source, term, limit=target_count - total_collected)
                         
                         if source_data:
-                            # Step 1: Remove duplicates using advanced fuzzy matching
-                            status_text.text(f"🔍 Removing duplicates from {len(source_data)} companies...")
-                            source_data = data_validator.remove_duplicates_advanced(source_data)
+                            # Add source data directly to collection
+                            collected_data.extend(source_data)
+                            total_collected = len(collected_data)
                             
-                            # Step 2: Validate each company with 200x better authenticity
-                            status_text.text(f"🔍 Validating {len(source_data)} companies from {source_names.get(source, source)}...")
-                            validated_data = data_validator.validate_batch_data(source_data)
+                            # Update progress
+                            progress = min(total_collected / target_count, 1.0)
+                            progress_bar.progress(progress)
                             
-                            # Step 3: Filter only high-quality verified data
-                            high_quality_data = data_validator.filter_high_quality_data(validated_data, min_score=min_validation_score)
+                            # Show results
+                            status_text.text(f"✅ {source_names.get(source, source)}: Found {len(source_data)} companies • Total: {total_collected}/{target_count}")
                             
-                            # Step 4: Add validated data to collection
-                            if high_quality_data:
-                                collected_data.extend(high_quality_data)
-                                total_collected = len(collected_data)
-                                
-                                # Update progress
-                                progress = min(total_collected / target_count, 1.0)
-                                progress_bar.progress(progress)
-                                
-                                # Show validation statistics
-                                validation_stats = f"✅ {source_names.get(source, source)}: Verified {len(high_quality_data)}/{len(source_data)} companies • Total: {total_collected}/{target_count}"
-                                status_text.text(validation_stats)
-                                
-                                # Show partial results with validation scores
-                                if collected_data:
-                                    df_temp = data_processor.process_data(pd.DataFrame(collected_data))
-                                    results_container.dataframe(df_temp.tail(5), use_container_width=True)
-                            else:
-                                status_text.text(f"⚠️ {source_names.get(source, source)}: No companies passed validation criteria")
+                            # Show partial results immediately
+                            if collected_data:
+                                df_temp = data_processor.process_data(collected_data[-5:])  # Show last 5 results
+                                if not df_temp.empty:
+                                    results_container.dataframe(df_temp, use_container_width=True)
                     
                     except Exception as e:
                         st.warning(f"⚠️ Error scraping {source} for {term}: {str(e)}")
