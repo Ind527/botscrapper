@@ -1,0 +1,123 @@
+Kamu adalah AI Developer tingkat dewa dengan keahlian Web Scraping Skala Besar, Validasi Data, dan AI Filtering.  
+Tugasmu: meningkatkan BOT Scraping Buyer menjadi **200x lebih canggih** dengan ketentuan:
+
+---
+
+### 🎯 **A. TARGET WAJIB**
+
+1. Setiap scraping harus:
+   - Mengambil data buyer dari **50+ sumber global**.
+   - Menghasilkan **minimal 50 perusahaan valid** per scraping.
+   - Semua data tervalidasi 100% (email, telepon, domain aktif).
+
+2. Bot harus:
+   - Scraping di **semua negara**.
+   - Bisa berjalan **100% di Replit** tanpa API eksternal.
+
+---
+
+### 🎯 **B. SUMBER WAJIB (50+ Sumber Global)**
+
+Gunakan minimal 50 sumber publik seperti:
+
+1. Alibaba  
+2. Kompass  
+3. ECPlaza  
+4. Go4WorldBusiness  
+5. Tradekey  
+6. Made-in-China  
+7. GlobalSources  
+8. YellowPages  
+9. Europages  
+10. ThomasNet  
+11. IndiaMART  
+12. DHgate  
+13. HKTDC  
+14. TradeIndia  
+15. ExportHub  
+16. TradeFord  
+17. BuyerList.org  
+18. Manufacturers Directory  
+19. B2Brazil  
+20. B2BHint  
+21. AfricanBusinessDirectory  
+22. LatinTrade  
+23. GlobalTrade.net  
+24. Exporters.SG  
+25. B2B-Cambodia  
+26. ImportersHub  
+27. GlobalTradePlaza  
+28. TradeWheel  
+29. KompassGlobal  
+30. Yalwa Business Directory  
+31. OpenCorporates  
+32. Crunchbase (open data)  
+33. LinkedIn public search  
+34. ZoomInfo (open profiles)  
+35. GlobalDatabase  
+36. Export Genius (public data)  
+37. Panjiva (open data)  
+38. Sulekha Business Directory  
+39. BusinessList.co  
+40. Bizcommunity  
+41. Yelp Business Search  
+42. Manta  
+43. B2BMap  
+44. Esources  
+45. SupplierList  
+46. ExportPages  
+47. WholesaleCentral  
+48. Hoovers (open data)  
+49. International Yellow Pages  
+50. DirectoryOfExporters  
+51. Google Business Listings (scraped via search)  
+52. Bing Business Directory (scraped via search)
+
+> 🔥 **Jika satu sumber gagal, bot harus otomatis pindah ke sumber lain hingga memenuhi minimal 50 buyer valid.**
+
+---
+
+### 🎯 **C. FITUR SCRAPING 200x**
+
+- **Scraping Paralel** (asyncio) → 200x lebih cepat.  
+- **Rotasi Proxy Gratis** → agar tidak terblokir.  
+- **Rotasi User-Agent & Fingerprint** → anti-detection.  
+- **Retry Otomatis** → jika valid <50, scraping ulang dari sumber cadangan.
+
+---
+
+### 🎯 **D. VALIDASI DATA 100%**
+
+- Modul `data_validator.py` harus:
+  - ✅ Verifikasi email (regex + MX lookup + disposable filter).  
+  - ✅ Validasi nomor telepon (regex internasional, kode negara valid).  
+  - ✅ Validasi domain (HTTP 200 OK).  
+  - ✅ AI Spam Detection → filter data palsu.
+
+---
+
+### 🎯 **E. OUTPUT**
+
+- Simpan ke CSV + SQLite.  
+- Format:
+company_name, contact_name, email, phone, website, country, industry, status_verified, ai_score, source
+
+
+---
+
+### 🎯 **F. LOGIKA BOT**
+
+1. Scraping dari 50+ sumber.  
+2. Simpan data mentah.  
+3. Jalankan modul validasi.  
+4. Jika buyer valid <50 → jalankan ulang scraping dari sumber cadangan.  
+5. Hasil akhir → hanya data 100% valid.
+
+---
+
+## ✅ **Tugasmu untuk Asisten Replit:**
+
+1. Implementasikan scraping dari **50+ sumber di atas**.  
+2. Pastikan hasil selalu **≥50 buyer valid** per eksekusi.  
+3. Semua berjalan **tanpa API**, hanya scraping HTML.  
+4. Gunakan multi-threading & async agar tetap cepat.
