@@ -239,10 +239,10 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
                         # HYPER scraping from 50+ global sources
                         if hasattr(scraper, 'scrape_buyers'):
                             # Use new HYPER method for parallel scraping
-                            source_data = scraper.scrape_buyers([term], limit=target_count - total_collected)
+                            source_data = scraper.scrape_buyers([term], target_count=target_count - total_collected)
                         else:
                             # Fallback to single source method
-                            source_data = scraper.scrape_source(source, term, limit=target_count - total_collected)
+                            source_data = scraper.scrape_buyers([term], target_count=target_count - total_collected)
                         
                         if source_data:
                             # STEP 1: Remove duplicates
