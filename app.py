@@ -217,15 +217,24 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
         results_container = st.empty()
         
         try:
-            # ULTRA-FAST scraping with AI keyword expansion
-            status_text.text("🤖 Initializing AI-powered scraping with 300x parallel processing...")
+            # Start timing
+            start_time = time.time()
             
-            # Use the ultra-fast scraper method
+            # ROBUST scraping with error handling and fallback
+            status_text.text("🤖 Initializing robust scraper with fallback system...")
+            
+            # Use the robust scraper method
             collected_data = scraper.scrape_buyers(terms_list, target_count=target_count)
             
+            # Calculate scraping time
+            scrape_time = time.time() - start_time
+            
             if collected_data:
-                status_text.text(f"🔍 Found {len(collected_data)} companies, starting validation...")
+                status_text.text(f"🔍 Found {len(collected_data)} companies in {scrape_time:.2f}s, starting validation...")
                 progress_bar.progress(0.5)
+                
+                # Display timing info
+                st.info(f"⏱️ Waktu Scraping: {scrape_time:.2f} detik ({scrape_time/60:.1f} menit) | Speed: {len(collected_data)/max(scrape_time, 0.1):.1f} companies/sec")
                 
                 # Save to fast formats
                 scraper.save_to_fast_formats(collected_data)
@@ -242,11 +251,12 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
                 valid_buyers = data_validator.filter_valid_buyers_only(validated_data)
                 
                 # Update progress
-                progress = min(total_collected / target_count, 1.0)
+                progress = min(len(collected_data) / target_count, 1.0)
                 progress_bar.progress(progress)
                 
-                # Show validation statistics
-                validation_stats = f"✅ Ultra-Fast AI Scraping: {len(valid_buyers)} VALID buyers from {len(collected_data)} total • Target: {target_count}"
+                # Show validation statistics with timing
+                total_time = time.time() - start_time
+                validation_stats = f"✅ Robust Scraping: {len(valid_buyers)} VALID buyers from {len(collected_data)} total • Time: {total_time:.2f}s • Target: {target_count}"
                 status_text.text(validation_stats)
                 
                 # Show results with validation details
@@ -257,7 +267,6 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
             else:
                 st.warning("⚠️ No companies found. Please try different search terms.")
                 valid_buyers = []
-                total_collected = 0
             
             # Process and save data
             if valid_buyers:
@@ -272,14 +281,19 @@ def start_scraping(target_count, delay_seconds, search_terms, use_tradeindia, us
                 else:
                     st.session_state.scraped_data = processed_df
                 
-                # Final validation check
+                # Final validation check with complete timing
                 valid_count = len([buyer for buyer in valid_buyers if buyer.get('status_verified') == 'VALID'])
+                final_time = time.time() - start_time
                 
-                status_text.text(f"✅ Ultra-Fast AI Scraping completed! Collected {len(valid_buyers)} companies ({valid_count} 100% validated).")
+                status_text.text(f"✅ Robust Scraping completed! Collected {len(valid_buyers)} companies ({valid_count} 100% validated) in {final_time:.2f}s.")
                 progress_bar.progress(1.0)
                 
+                # Display detailed performance stats
+                speed = len(valid_buyers) / max(final_time, 0.1)
+                st.success(f"🎯 COMPLETED: {valid_count} valid buyers found in {final_time:.2f} seconds! ({speed:.1f} companies/sec)")
+                
                 if valid_count >= target_count:
-                    st.success(f"🎯 SUCCESS: {valid_count} valid buyers found! Target achieved with 300x speed!")
+                    st.balloons()
                 elif valid_count >= target_count // 2:
                     st.warning(f"⚠️ Partial success: {valid_count} valid buyers found (target was {target_count}). Consider running again for more data.")
                 else:
