@@ -1,0 +1,155 @@
+2025-07-27 16:54:22,887 - robust_scraper - INFO - Robust Turmeric Scraper initialized
+2025-07-27 16:54:22,951 - robust_scraper - INFO - 🚀 Robust Turmeric Scraper initialized with full error handling
+2025-07-27 16:54:22,953 - robust_scraper - INFO - 🚀 Starting robust scraping for 5 terms, target: 50
+2025-07-27 16:54:22,954 - robust_scraper - INFO - 🔍 Processing search term: turmeric buyer
+2025-07-27 16:54:22,954 - robust_scraper - INFO - 🔍 Scraping tradeindia - Term: turmeric buyer - Page: 1
+2025-07-27 16:54:23,880 - robust_scraper - INFO - ✅ Success: https://www.tradeindia.com/Seller/search.html - Status: 200
+2025-07-27 16:54:23,887 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:54:23,888 - robust_scraper - WARNING - ⚠️  tradeindia: No companies found for 'turmeric buyer'
+2025-07-27 16:54:23,889 - robust_scraper - INFO - 🔄 Auto retry with: bulk turmeric buyer
+2025-07-27 16:54:23,889 - robust_scraper - INFO - 🔍 Scraping tradeindia - Term: bulk turmeric buyer - Page: 1
+2025-07-27 16:54:24,750 - robust_scraper - INFO - ✅ Success: https://www.tradeindia.com/Seller/search.html - Status: 200
+2025-07-27 16:54:24,757 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:54:24,757 - robust_scraper - INFO - 🔄 Auto retry with: turmeric buyer importer
+2025-07-27 16:54:24,757 - robust_scraper - INFO - 🔍 Scraping tradeindia - Term: turmeric buyer importer - Page: 1
+2025-07-27 16:54:25,619 - robust_scraper - INFO - ✅ Success: https://www.tradeindia.com/Seller/search.html - Status: 200
+2025-07-27 16:54:25,626 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:54:25,627 - robust_scraper - INFO - 🔄 Auto retry with: turmeric buyer wholesale
+2025-07-27 16:54:25,627 - robust_scraper - INFO - 🔍 Scraping tradeindia - Term: turmeric buyer wholesale - Page: 1
+2025-07-27 16:54:27,132 - robust_scraper - INFO - ✅ Success: https://www.tradeindia.com/Seller/search.html - Status: 200
+2025-07-27 16:54:27,140 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:54:28,594 - robust_scraper - INFO - 🔍 Scraping indiamart - Term: turmeric buyer - Page: 1
+2025-07-27 16:54:28,717 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:54:31,825 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:54:35,745 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:54:39,745 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:54:45,837 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:54:49,881 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:54:52,425 - robust_scraper - ERROR - ❌ Error scraping indiamart for turmeric buyer: Rate limited: 403
+2025-07-27 16:54:52,425 - robust_scraper - WARNING - ⚠️  indiamart: No companies found for 'turmeric buyer'
+2025-07-27 16:54:52,425 - robust_scraper - INFO - 🔄 Auto retry with: bulk turmeric buyer
+2025-07-27 16:54:52,426 - robust_scraper - INFO - 🔍 Scraping indiamart - Term: bulk turmeric buyer - Page: 1
+2025-07-27 16:54:52,539 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:54:56,450 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:55:01,562 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:55:04,498 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:55:10,830 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:55:15,812 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:55:18,696 - robust_scraper - ERROR - ❌ Error scraping indiamart for bulk turmeric buyer: Rate limited: 403
+2025-07-27 16:55:18,697 - robust_scraper - INFO - 🔄 Auto retry with: turmeric buyer importer
+2025-07-27 16:55:18,697 - robust_scraper - INFO - 🔍 Scraping indiamart - Term: turmeric buyer importer - Page: 1
+2025-07-27 16:55:18,814 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:55:23,184 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:55:27,600 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:55:31,399 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:55:36,551 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:55:40,463 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:55:42,518 - robust_scraper - ERROR - ❌ Error scraping indiamart for turmeric buyer importer: Rate limited: 403
+2025-07-27 16:55:42,518 - robust_scraper - INFO - 🔄 Auto retry with: turmeric buyer wholesale
+2025-07-27 16:55:42,518 - robust_scraper - INFO - 🔍 Scraping indiamart - Term: turmeric buyer wholesale - Page: 1
+2025-07-27 16:55:42,636 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:55:45,780 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:55:49,310 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:55:51,767 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:55:57,444 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:56:02,265 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:56:04,336 - robust_scraper - ERROR - ❌ Error scraping indiamart for turmeric buyer wholesale: Rate limited: 403
+2025-07-27 16:56:05,818 - robust_scraper - INFO - 🔍 Scraping exportersindia - Term: turmeric buyer - Page: 1
+2025-07-27 16:56:06,479 - robust_scraper - INFO - ✅ Success: https://www.exportersindia.com/search - Status: 200
+2025-07-27 16:56:06,529 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:56:06,532 - robust_scraper - WARNING - ⚠️  exportersindia: No companies found for 'turmeric buyer'
+2025-07-27 16:56:06,535 - robust_scraper - INFO - 🔄 Auto retry with: bulk turmeric buyer
+2025-07-27 16:56:06,540 - robust_scraper - INFO - 🔍 Scraping exportersindia - Term: bulk turmeric buyer - Page: 1
+2025-07-27 16:56:07,178 - robust_scraper - INFO - ✅ Success: https://www.exportersindia.com/search - Status: 200
+2025-07-27 16:56:07,205 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:56:07,207 - robust_scraper - INFO - 🔄 Auto retry with: turmeric buyer importer
+2025-07-27 16:56:07,207 - robust_scraper - INFO - 🔍 Scraping exportersindia - Term: turmeric buyer importer - Page: 1
+2025-07-27 16:56:07,842 - robust_scraper - INFO - ✅ Success: https://www.exportersindia.com/search - Status: 200
+2025-07-27 16:56:07,874 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:56:07,874 - robust_scraper - INFO - 🔄 Auto retry with: turmeric buyer wholesale
+2025-07-27 16:56:07,874 - robust_scraper - INFO - 🔍 Scraping exportersindia - Term: turmeric buyer wholesale - Page: 1
+2025-07-27 16:56:08,498 - robust_scraper - INFO - ✅ Success: https://www.exportersindia.com/search - Status: 200
+2025-07-27 16:56:08,556 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:56:09,511 - robust_scraper - INFO - 🔍 Processing search term: turmeric importer
+2025-07-27 16:56:09,511 - robust_scraper - INFO - 🔍 Scraping tradeindia - Term: turmeric importer - Page: 1
+2025-07-27 16:56:10,379 - robust_scraper - INFO - ✅ Success: https://www.tradeindia.com/Seller/search.html - Status: 200
+2025-07-27 16:56:10,387 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:56:10,387 - robust_scraper - WARNING - ⚠️  tradeindia: No companies found for 'turmeric importer'
+2025-07-27 16:56:10,942 - robust_scraper - INFO - 🔍 Scraping indiamart - Term: turmeric importer - Page: 1
+2025-07-27 16:56:11,060 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:56:14,248 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:56:18,062 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:56:21,271 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:56:26,756 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:56:31,451 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:56:34,186 - robust_scraper - ERROR - ❌ Error scraping indiamart for turmeric importer: Rate limited: 403
+2025-07-27 16:56:34,187 - robust_scraper - WARNING - ⚠️  indiamart: No companies found for 'turmeric importer'
+2025-07-27 16:56:35,378 - robust_scraper - INFO - 🔍 Scraping exportersindia - Term: turmeric importer - Page: 1
+2025-07-27 16:56:35,987 - robust_scraper - INFO - ✅ Success: https://www.exportersindia.com/search - Status: 200
+2025-07-27 16:56:36,009 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:56:36,009 - robust_scraper - WARNING - ⚠️  exportersindia: No companies found for 'turmeric importer'
+2025-07-27 16:56:36,535 - robust_scraper - INFO - 🔍 Processing search term: spice buyer
+2025-07-27 16:56:36,536 - robust_scraper - INFO - 🔍 Scraping tradeindia - Term: spice buyer - Page: 1
+2025-07-27 16:56:36,794 - robust_scraper - INFO - ✅ Success: https://www.tradeindia.com/Seller/search.html - Status: 200
+2025-07-27 16:56:36,804 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:56:36,805 - robust_scraper - WARNING - ⚠️  tradeindia: No companies found for 'spice buyer'
+2025-07-27 16:56:38,015 - robust_scraper - INFO - 🔍 Scraping indiamart - Term: spice buyer - Page: 1
+2025-07-27 16:56:38,128 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:56:42,572 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:56:46,415 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:56:49,635 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:56:56,295 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:57:00,569 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:57:03,224 - robust_scraper - ERROR - ❌ Error scraping indiamart for spice buyer: Rate limited: 403
+2025-07-27 16:57:03,224 - robust_scraper - WARNING - ⚠️  indiamart: No companies found for 'spice buyer'
+2025-07-27 16:57:04,254 - robust_scraper - INFO - 🔍 Scraping exportersindia - Term: spice buyer - Page: 1
+2025-07-27 16:57:04,869 - robust_scraper - INFO - ✅ Success: https://www.exportersindia.com/search - Status: 200
+2025-07-27 16:57:04,907 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:57:04,908 - robust_scraper - WARNING - ⚠️  exportersindia: No companies found for 'spice buyer'
+2025-07-27 16:57:05,761 - robust_scraper - INFO - 🔍 Processing search term: turmeric trader
+2025-07-27 16:57:05,762 - robust_scraper - INFO - 🔍 Scraping tradeindia - Term: turmeric trader - Page: 1
+2025-07-27 16:57:09,242 - robust_scraper - INFO - ✅ Success: https://www.tradeindia.com/Seller/search.html - Status: 200
+2025-07-27 16:57:09,252 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:57:09,253 - robust_scraper - WARNING - ⚠️  tradeindia: No companies found for 'turmeric trader'
+2025-07-27 16:57:10,366 - robust_scraper - INFO - 🔍 Scraping indiamart - Term: turmeric trader - Page: 1
+2025-07-27 16:57:10,480 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:57:14,588 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:57:19,133 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:57:21,338 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:57:28,251 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:57:30,525 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:57:32,323 - robust_scraper - ERROR - ❌ Error scraping indiamart for turmeric trader: Rate limited: 403
+2025-07-27 16:57:32,323 - robust_scraper - WARNING - ⚠️  indiamart: No companies found for 'turmeric trader'
+2025-07-27 16:57:32,964 - robust_scraper - INFO - 🔍 Scraping exportersindia - Term: turmeric trader - Page: 1
+2025-07-27 16:57:33,643 - robust_scraper - INFO - ✅ Success: https://www.exportersindia.com/search - Status: 200
+2025-07-27 16:57:33,668 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:57:33,668 - robust_scraper - WARNING - ⚠️  exportersindia: No companies found for 'turmeric trader'
+2025-07-27 16:57:35,125 - robust_scraper - INFO - 🔍 Processing search term: turmeric distributor
+2025-07-27 16:57:35,125 - robust_scraper - INFO - 🔍 Scraping tradeindia - Term: turmeric distributor - Page: 1
+2025-07-27 16:57:38,154 - robust_scraper - INFO - ✅ Success: https://www.tradeindia.com/Seller/search.html - Status: 200
+2025-07-27 16:57:38,164 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:57:38,164 - robust_scraper - WARNING - ⚠️  tradeindia: No companies found for 'turmeric distributor'
+2025-07-27 16:57:39,440 - robust_scraper - INFO - 🔍 Scraping indiamart - Term: turmeric distributor - Page: 1
+2025-07-27 16:57:39,557 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:57:42,047 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:57:45,496 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:57:47,748 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:57:54,000 - robust_scraper - WARNING - ⚠️  Rate limited or blocked: https://dir.indiamart.com/search.mp - Status: 403
+2025-07-27 16:57:57,275 - robust_scraper - ERROR - ❌ Request failed: https://dir.indiamart.com/search.mp - Error: Rate limited: 403
+2025-07-27 16:57:58,694 - robust_scraper - ERROR - ❌ Error scraping indiamart for turmeric distributor: Rate limited: 403
+2025-07-27 16:57:58,694 - robust_scraper - WARNING - ⚠️  indiamart: No companies found for 'turmeric distributor'
+2025-07-27 16:57:59,810 - robust_scraper - INFO - 🔍 Scraping exportersindia - Term: turmeric distributor - Page: 1
+2025-07-27 16:58:00,435 - robust_scraper - INFO - ✅ Success: https://www.exportersindia.com/search - Status: 200
+2025-07-27 16:58:00,457 - robust_scraper - INFO - No results on page 1, stopping pagination
+2025-07-27 16:58:00,458 - robust_scraper - WARNING - ⚠️  exportersindia: No companies found for 'turmeric distributor'
+2025-07-27 16:58:01,266 - robust_scraper - INFO - 🔄 Removed 0 duplicates
+2025-07-27 16:58:01,267 - robust_scraper - INFO - 
+📊 SCRAPING STATISTICS:
+- Total Requests: 40
+- Successful: 16
+- Failed: 24
+- Retries Used: 24
+- Companies Found: 0
+- Success Rate: 40.0%
+        
+2025-07-27 16:58:01,267 - robust_scraper - WARNING - No companies to save
